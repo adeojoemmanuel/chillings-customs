@@ -4,27 +4,63 @@
   align-items: center;
   justify-content: center;
   padding: 4rem 2rem;
-  background: linear-gradient(135deg, rgba(10, 10, 10, 0.9) 0%, rgba(26, 26, 46, 0.9) 100%),
-              radial-gradient(circle at 50% 50%, rgba(100, 150, 255, 0.1) 0%, transparent 70%);
   position: relative;
   overflow: hidden;
 }
 
-.hero::before {
-  content: '';
+.hero-carousel {
   position: absolute;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
-  background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="grid" width="100" height="100" patternUnits="userSpaceOnUse"><path d="M 100 0 L 0 0 0 100" fill="none" stroke="rgba(100,150,255,0.1)" stroke-width="1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
-  opacity: 0.3;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.carousel-slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0;
+  transition: opacity 1.5s ease-in-out;
+  transform: scale(1.1);
+  animation: zoomIn 8s ease-in-out infinite;
+}
+
+.carousel-slide.active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+@keyframes zoomIn {
+  0%, 100% {
+    transform: scale(1.1);
+  }
+  50% {
+    transform: scale(1);
+  }
+}
+
+.carousel-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(10, 10, 10, 0.85) 0%, rgba(26, 26, 46, 0.85) 100%),
+              radial-gradient(circle at 50% 50%, rgba(100, 150, 255, 0.15) 0%, transparent 70%);
+  z-index: 1;
 }
 
 .hero-content {
   max-width: 800px;
   text-align: center;
-  z-index: 1;
+  z-index: 2;
   position: relative;
 }
 
@@ -58,24 +94,48 @@
   animation: fadeInUp 1.2s ease;
 }
 
+.hero-buttons {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  animation: fadeInUp 1.4s ease;
+}
+
 .cta-button {
   display: inline-block;
   padding: 1rem 2.5rem;
-  background: linear-gradient(135deg, #64aaff 0%, #4a90e2 100%);
   color: #ffffff;
   text-decoration: none;
   border-radius: 50px;
   font-size: 1.1rem;
   font-weight: 600;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(100, 150, 255, 0.3);
-  animation: fadeInUp 1.4s ease;
+  border: 2px solid transparent;
 }
 
-.cta-button:hover {
+.cta-button.primary {
+  background: linear-gradient(135deg, #64aaff 0%, #4a90e2 100%);
+  box-shadow: 0 4px 15px rgba(100, 150, 255, 0.3);
+}
+
+.cta-button.primary:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(100, 150, 255, 0.5);
   background: linear-gradient(135deg, #4a90e2 0%, #64aaff 100%);
+}
+
+.cta-button.secondary {
+  background: transparent;
+  border: 2px solid #64aaff;
+  color: #64aaff;
+}
+
+.cta-button.secondary:hover {
+  background: rgba(100, 150, 255, 0.1);
+  transform: translateY(-2px);
+  border-color: #4a90e2;
+  color: #ffffff;
 }
 
 @keyframes fadeInUp {
@@ -102,9 +162,50 @@
     font-size: 1rem;
   }
 
+  .hero-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+
   .cta-button {
     padding: 0.9rem 2rem;
     font-size: 1rem;
+    width: 100%;
+    max-width: 300px;
+    text-align: center;
   }
+}
+
+.carousel-indicators {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.75rem;
+  z-index: 3;
+}
+
+.indicator {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
+}
+
+.indicator:hover {
+  background: rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.8);
+}
+
+.indicator.active {
+  background: #64aaff;
+  border-color: #64aaff;
+  width: 30px;
+  border-radius: 6px;
 }
 
